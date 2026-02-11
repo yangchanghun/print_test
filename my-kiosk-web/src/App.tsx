@@ -5,21 +5,21 @@ function App() {
   const [phone, setPhone] = useState("");
 
   const handlePrint = () => {
-    const receipt = `
-접수 확인서
-----------------
-이름: 홍길동
-전화번호: 010-1234-5678
-----------------
-감사합니다
-`;
+    //     const receipt = `
+    // 접수 확인서
+    // ----------------
+    // 이름: 홍길동
+    // 전화번호: 010-1234-5678
+    // ----------------
+    // 감사합니다
+    // `;
 
-    const encoded = encodeURIComponent(receipt);
+    const encoded = encodeURIComponent("안녕하세요 테스트 출력");
 
     window.location.href =
       "intent://print_text?text=" +
       encoded +
-      "#Intent;scheme=posapp;package=com.rea.receiptprinterapp;end;";
+      "#Intent;scheme=posapp;package=com.rea.printtest;end;";
   };
 
   return (
