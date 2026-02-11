@@ -16,7 +16,10 @@ function App() {
 
     const encoded = encodeURIComponent(receipt);
 
-    window.location.href = `posapp://print_text?text=${encoded}`;
+    window.location.href =
+      "intent://print_text?text=" +
+      encoded +
+      "#Intent;scheme=posapp;package=com.rea.receiptprinterapp;end;";
   };
 
   return (
