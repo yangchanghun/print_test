@@ -3,7 +3,7 @@ import { useState } from "react";
 function App() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-
+  alert("테스트");
   const handlePrint = () => {
     if (!name || !phone) {
       alert("이름과 전화번호를 모두 입력해주세요.");
