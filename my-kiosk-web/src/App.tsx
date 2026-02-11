@@ -5,40 +5,18 @@ function App() {
   const [phone, setPhone] = useState("");
 
   const handlePrint = () => {
-    if (!name || !phone) {
-      alert("이름과 전화번호를 모두 입력해주세요.");
-      return;
-    }
-
-    // 🔥 EPSON 프린터로 보낼 문자열
     const receipt = `
 접수 확인서
 ----------------
-이름: ${name}
-전화번호: ${phone}
+이름: 홍길동
+전화번호: 010-1234-5678
 ----------------
 감사합니다
 `;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const androidObj = (window as any).Android;
+    const encoded = encodeURIComponent(receipt);
 
-    alert("Android 타입: " + typeof androidObj);
-    alert("printText 타입: " + typeof androidObj?.printText);
-
-    if (androidObj && typeof androidObj.printText === "function") {
-      alert("Android 호출 직전");
-
-      try {
-        androidObj.printText(receipt);
-        alert("Android 호출 이후");
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (e) {
-        alert("JS 에러 발생");
-      }
-    } else {
-      alert("Android 객체 또는 printText 없음");
-    }
+    window.location.href = `posapp://print_text?text=${encoded}`;
   };
 
   return (
