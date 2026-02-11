@@ -16,7 +16,7 @@ function App() {
 
     const encoded = encodeURIComponent(receipt);
 
-    window.location.href = `intent://kited_sub?seq=${encoded}#Intent;scheme=kisses;package=com.rea.selfcounter;end`;
+    window.location.href = `posapp://print_text?text=${encoded}`;
   };
 
   return (
