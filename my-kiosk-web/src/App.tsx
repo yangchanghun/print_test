@@ -21,19 +21,23 @@ function App() {
 `;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if ((window as any).Android?.printText) {
+    const androidObj = (window as any).Android;
+
+    alert("Android 타입: " + typeof androidObj);
+    alert("printText 타입: " + typeof androidObj?.printText);
+
+    if (androidObj && typeof androidObj.printText === "function") {
       alert("Android 호출 직전");
 
       try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (window as any).Android.printText(receipt);
+        androidObj.printText(receipt);
         alert("Android 호출 이후");
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (e) {
         alert("JS 에러 발생");
       }
     } else {
-      alert("Android 객체 없음");
+      alert("Android 객체 또는 printText 없음");
     }
   };
 
