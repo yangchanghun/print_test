@@ -3,7 +3,7 @@ import { useState } from "react";
 function App() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  alert("테스트");
+
   const handlePrint = () => {
     if (!name || !phone) {
       alert("이름과 전화번호를 모두 입력해주세요.");
@@ -20,13 +20,20 @@ function App() {
 감사합니다
 `;
 
-    // 🔥 Android Native 호출 (핵심)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ((window as any).Android?.printText) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (window as any).Android.printText(receipt);
+      alert("Android 호출 직전");
+
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (window as any).Android.printText(receipt);
+        alert("Android 호출 이후");
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (e) {
+        alert("JS 에러 발생");
+      }
     } else {
-      alert("Android 프린터 브릿지를 찾을 수 없습니다.");
+      alert("Android 객체 없음");
     }
   };
 
