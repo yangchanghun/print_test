@@ -4,22 +4,17 @@ function App() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
 
+  // 리액트(웹)의 출력 버튼 클릭 시
   const handlePrint = () => {
-    //     const receipt = `
-    // 접수 확인서
-    // ----------------
-    // 이름: 홍길동
-    // 전화번호: 010-1234-5678
-    // ----------------
-    // 감사합니다
-    // `;
+    const name = "홍길동";
+    const info = "방문 정보 블라블라";
 
-    const encoded = encodeURIComponent("안녕하세요 테스트 출력");
-
-    window.location.href =
-      "intent://print_text?text=" +
-      encoded +
-      "#Intent;scheme=posapp;package=com.rea.printtest;end;";
+    // 여기서 'printReceipt'라는 이름이 안드로이드 함수명과 똑같아야 합니다!
+    if (window.AndroidBridge) {
+      window.AndroidBridge.printReceipt(name, info);
+    } else {
+      alert("키오스크 앱에서 실행해 주세요.");
+    }
   };
 
   return (
