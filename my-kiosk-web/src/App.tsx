@@ -3,6 +3,7 @@ import { useState } from "react";
 function App() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [log, setLog] = useState("");
 
   // 리액트(웹)의 출력 버튼 클릭 시
   const handlePrint = () => {
@@ -14,6 +15,10 @@ function App() {
       window.AndroidBridge.printReceipt(name, info);
     } else {
       alert("키오스크 앱에서 실행해 주세요.");
+    }
+    if (window.AndroidBridge) {
+      const result = window.AndroidBridge.printReceipt(name, phone);
+      setLog(`최신 상태: ${result}`); // 화면 하단에 에러 노출
     }
   };
 
@@ -48,6 +53,7 @@ function App() {
         >
           🖨️ 출력
         </button>
+        <p>오류코드출력: {log}</p>
       </div>
     </div>
   );
