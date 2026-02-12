@@ -3,22 +3,23 @@ import { useState } from "react";
 function App() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [log, setLog] = useState("");
 
-  // 리액트(웹)의 출력 버튼 클릭 시
   const handlePrint = () => {
-    const name = "홍길동";
-    const info = "방문 정보 블라블라";
+    const nameValue = name || "홍길동"; // 입력값이 없으면 기본값
+    const infoValue = phone || "방문 정보 없음";
 
-    // 여기서 'printReceipt'라는 이름이 안드로이드 함수명과 똑같아야 합니다!
-    if (window.AndroidBridge) {
-      window.AndroidBridge.printReceipt(name, info);
+    // 안드로이드에 심어둔 AndroidBridge가 있는지 확인
+    if (
+      window.AndroidBridge &&
+      typeof window.AndroidBridge.printReceipt === "function"
+    ) {
+      // 안드로이드 함수 호출
+      const result = window.AndroidBridge.printReceipt(nameValue, infoValue);
+      console.log("인쇄 요청 결과:", result);
     } else {
-      alert("키오스크 앱에서 실행해 주세요.");
-    }
-    if (window.AndroidBridge) {
-      const result = window.AndroidBridge.printReceipt(name, phone);
-      setLog(`최신 상태: ${result}`); // 화면 하단에 에러 노출
+      // 브라우저 테스트용 (안드로이드 앱이 아닐 때)
+      alert("안드로이드 키오스크 앱 환경이 아닙니다. 일반 인쇄창을 띄웁니다.");
+      window.print();
     }
   };
 
@@ -53,7 +54,6 @@ function App() {
         >
           🖨️ 출력
         </button>
-        <p>오류코드출력: {log}</p>
       </div>
     </div>
   );
