@@ -49,12 +49,22 @@ function App() {
         </button>
       </div>
 
-      {/* 2. 실제 영수증 인쇄 영역 (평소엔 숨김, 인쇄 시에만 80mm 너비로 나타남) */}
-      <div className="hidden print:block print:w-[80mm] text-black bg-white leading-tight font-mono">
-        <div className="text-center border-b border-black pb-2 mb-2">
-          <h2 className="text-2xl font-bold">방 문 증</h2>
+      {/* 2. 실제 영수증 인쇄 영역 */}
+      <div
+        className="hidden print:block"
+        style={{ width: "80mm", color: "black", backgroundColor: "white" }}
+      >
+        <div
+          style={{
+            textAlign: "center",
+            borderBottom: "2px solid black",
+            paddingBottom: "10px",
+            marginBottom: "10px",
+          }}
+        >
+          <h2 style={{ fontSize: "30px", fontWeight: "bold" }}>방 문 증</h2>
         </div>
-        <div className="text-lg space-y-2 py-4">
+        <div style={{ fontSize: "20px", lineHeight: "1.5" }}>
           <p>
             <strong>성 함:</strong> {name || "홍길동"}
           </p>
@@ -65,8 +75,15 @@ function App() {
             <strong>일 시:</strong> {new Date().toLocaleString("ko-KR")}
           </p>
         </div>
-        <div className="text-center border-t border-black mt-4 pt-2">
-          <p className="text-sm">감사합니다.</p>
+        <div
+          style={{
+            textAlign: "center",
+            borderTop: "2px solid black",
+            marginTop: "20px",
+            paddingTop: "10px",
+          }}
+        >
+          <p>감사합니다.</p>
         </div>
       </div>
 
@@ -75,21 +92,15 @@ function App() {
       <style
         dangerouslySetInnerHTML={{
           __html: `
-    @media print {
-      @page {
-        size: 80mm auto; /* EU-m30 기본 너비 */
-        margin: 0;
-      }
-      body { margin: 0; padding: 0; background: white; -webkit-print-color-adjust: exact; }
-      
-      /* Tailwind의 콜론(:) 클래스를 인쇄 시 인식하도록 수정 */
-      .print:hidden { display: none !important; }
-      .print:block { display: block !important; }
-      
-      /* 배경색이나 그림자가 인쇄 안 될 경우를 대비 */
-      * { color-adjust: exact; -webkit-print-color-adjust: exact; }
+  @media print {
+    .print\:block { display: block !important; }
+    * { 
+      color: black !important; 
+      -webkit-print-color-adjust: exact; 
+      print-color-adjust: exact;
     }
-  `,
+  }
+`,
         }}
       />
     </div>
