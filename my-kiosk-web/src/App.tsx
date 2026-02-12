@@ -5,104 +5,66 @@ function App() {
   const [phone, setPhone] = useState("");
 
   const handlePrint = () => {
-    // 안드로이드 앱이라면 브릿지 사용, PC라면 window.print()
-    if (window.AndroidBridge?.printReceipt) {
-      window.AndroidBridge.printReceipt(
-        name || "홍길동",
-        phone || "방문 정보 없음",
-      );
+    const userName = name || "홍길동";
+    const userPhone = phone || "010-0000-0000";
+
+    // 안드로이드 앱의 브릿지 호출
+    if (
+      window.AndroidBridge &&
+      typeof window.AndroidBridge.printReceipt === "function"
+    ) {
+      const result = window.AndroidBridge.printReceipt(userName, userPhone);
+      if (result !== "SUCCESS") {
+        alert("인쇄 실패: " + result);
+      }
     } else {
+      // 일반 브라우저 테스트용
+      console.log("안드로이드 환경이 아닙니다.");
       window.print();
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-      {/* 1. 웹 화면용 UI (인쇄 시에는 숨겨짐) */}
-      <div className="print:hidden w-full max-w-md rounded-2xl bg-white p-8 shadow-xl">
-        <h1 className="mb-6 text-center text-3xl font-extrabold text-gray-800">
-          📄 접수 확인서
+    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-6">
+      <div className="w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl">
+        <h1 className="text-3xl font-black text-center mb-8">
+          📄 키오스크 접수
         </h1>
-        <div className="mb-4 text-left">
-          <label className="block font-semibold mb-1">이름</label>
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full border p-3 rounded"
-            placeholder="이름을 입력하세요"
-          />
+
+        <div className="space-y-4 mb-8">
+          <div>
+            <label className="block text-sm font-bold text-gray-700 mb-1">
+              성함
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full border-2 border-gray-200 p-4 rounded-xl text-xl focus:border-black outline-none"
+              placeholder="이름 입력"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-bold text-gray-700 mb-1">
+              연락처
+            </label>
+            <input
+              type="text"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="w-full border-2 border-gray-200 p-4 rounded-xl text-xl focus:border-black outline-none"
+              placeholder="번호 입력"
+            />
+          </div>
         </div>
-        <div className="mb-6 text-left">
-          <label className="block font-semibold mb-1">전화번호</label>
-          <input
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="w-full border p-3 rounded"
-            placeholder="번호를 입력하세요"
-          />
-        </div>
+
         <button
           onClick={handlePrint}
-          className="w-full rounded-xl bg-black py-4 text-xl font-bold text-white hover:bg-gray-800 transition-all"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 rounded-2xl text-2xl font-bold transition-all active:scale-95"
         >
           🖨️ 영수증 출력
         </button>
       </div>
-
-      {/* 2. 실제 영수증 인쇄 영역 */}
-      <div
-        className="hidden print:block"
-        style={{ width: "80mm", color: "black", backgroundColor: "white" }}
-      >
-        <div
-          style={{
-            textAlign: "center",
-            borderBottom: "2px solid black",
-            paddingBottom: "10px",
-            marginBottom: "10px",
-          }}
-        >
-          <h2 style={{ fontSize: "30px", fontWeight: "bold" }}>방 문 증</h2>
-        </div>
-        <div style={{ fontSize: "20px", lineHeight: "1.5" }}>
-          <p>
-            <strong>성 함:</strong> {name || "홍길동"}
-          </p>
-          <p>
-            <strong>정 보:</strong> {phone || "방문 정보 없음"}
-          </p>
-          <p>
-            <strong>일 시:</strong> {new Date().toLocaleString("ko-KR")}
-          </p>
-        </div>
-        <div
-          style={{
-            textAlign: "center",
-            borderTop: "2px solid black",
-            marginTop: "20px",
-            paddingTop: "10px",
-          }}
-        >
-          <p>감사합니다.</p>
-        </div>
-      </div>
-
-      {/* 3. 영수증 최적화 CSS */}
-      {/* 3. 영수증 최적화 CSS */}
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-  @media print {
-    .print\:block { display: block !important; }
-    * { 
-      color: black !important; 
-      -webkit-print-color-adjust: exact; 
-      print-color-adjust: exact;
-    }
-  }
-`,
-        }}
-      />
     </div>
   );
 }
