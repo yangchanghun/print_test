@@ -71,19 +71,25 @@ function App() {
       </div>
 
       {/* 3. 영수증 최적화 CSS */}
+      {/* 3. 영수증 최적화 CSS */}
       <style
         dangerouslySetInnerHTML={{
           __html: `
-        @media print {
-          @page {
-            size: 80mm auto; /* EU-m30 기본 너비 */
-            margin: 0;
-          }
-          body { margin: 0; padding: 0; background: white; }
-          .print:hidden { display: none !important; }
-          .print:block { display: block !important; }
-        }
-      `,
+    @media print {
+      @page {
+        size: 80mm auto; /* EU-m30 기본 너비 */
+        margin: 0;
+      }
+      body { margin: 0; padding: 0; background: white; -webkit-print-color-adjust: exact; }
+      
+      /* Tailwind의 콜론(:) 클래스를 인쇄 시 인식하도록 수정 */
+      .print:hidden { display: none !important; }
+      .print:block { display: block !important; }
+      
+      /* 배경색이나 그림자가 인쇄 안 될 경우를 대비 */
+      * { color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  `,
         }}
       />
     </div>
