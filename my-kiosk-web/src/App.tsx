@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function App() {
   const [logs, setLogs] = useState<string[]>([]);
@@ -7,20 +7,11 @@ export default function App() {
     setLogs((prev) => [...prev, msg]);
   };
 
-  useEffect(() => {
-    // Android에서 로그 보내는 함수
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).receiveAndroidLog = (msg: string) => {
-      addLog("[ANDROID] " + msg);
-    };
-  }, []);
-
   const checkBridge = () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if ((window as any).AndroidBridge.PrintTest()) {
-      addLog("PrintTest 존재");
+    if ((window as any).AndroidBridge) {
+      addLog("AndroidBridge 존재");
     } else {
-      addLog("PrintTest 없음");
+      addLog("AndroidBridge 없음");
     }
   };
 
@@ -28,8 +19,14 @@ export default function App() {
     addLog("TEST PRINT 요청");
 
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const result = (window as any).AndroidBridge.printTest();
+      const bridge = (window as any).AndroidBridge;
+
+      if (!bridge) {
+        addLog("AndroidBridge 없음");
+        return;
+      }
+
+      const result = bridge.printTest();
 
       addLog("결과: " + result);
     } catch (e) {
