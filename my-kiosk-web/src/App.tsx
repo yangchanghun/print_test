@@ -23,13 +23,13 @@ export default function App() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const bridge = (window as any).AndroidBridge;
 
-      if (!bridge) {
-        addLog("AndroidBridge 없음");
-        return;
-      }
+      // if (!bridge) {
+      //   addLog("AndroidBridge 없음");
+      //   return;
+      // }
 
       const result = bridge.printTest();
-
+      alert(result);
       addLog("결과: " + result);
     } catch (e) {
       addLog("에러: " + e);
