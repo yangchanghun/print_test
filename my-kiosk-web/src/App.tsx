@@ -8,6 +8,7 @@ export default function App() {
   };
 
   const checkBridge = () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ((window as any).AndroidBridge) {
       addLog("AndroidBridge 존재");
     } else {
@@ -19,6 +20,7 @@ export default function App() {
     addLog("TEST PRINT 요청");
 
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const bridge = (window as any).AndroidBridge;
 
       if (!bridge) {
