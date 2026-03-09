@@ -29,7 +29,7 @@ export default function App() {
       // }
 
       // 결과를 변수에 담고 로그를 찍은 뒤 alert 띄우기
-      const result = bridge.printTest();
+      const result = bridge.getAllUsbLogsAndPrint();
       addLog("결과 수신: " + result);
       alert(result);
     } catch (e) {
